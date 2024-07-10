@@ -3,47 +3,46 @@ from main.models import *
 from django.db.utils import IntegrityError
 #funciones de usuario
 
-def crear_inmueble(nombre,descripcion, direccion, comuna, mts_cuadrados, mts_totales, precio_mensual, cant_estacionamientos, cant_habitaciones, cant_banos, disponible, eliminado, arrendatario_rut):
+def crear_inmueble(nombre,descripcion, direccion,  mts_cons, mts_ttls,  num_estacionamientos,num_banos,tipo_inmueble,precio_mensual, precio_ufs,comuna, username):
     inmueble = Inmueble(
         nombre=nombre,
         descripcion=descripcion, 
         direccion=direccion, 
-        comuna=comuna,
-        mts_cuadrados=mts_cuadrados,
-        mts_totales=mts_totales, 
+        mts_cons=mts_cons,
+        mts_ttls=mts_ttls, 
+        num_estacionamientos=num_estacionamientos,
+        num_banos = num_banos,
+        tipo_inmueble = tipo_inmueble,
         precio_mensual=precio_mensual, 
-        cant_estacionamientos=cant_estacionamientos, 
-        cant_habitaciones=cant_habitaciones, 
-        cant_banos=cant_banos, 
-        eliminado=eliminado, 
-        arrendatario=arrendatario_rut 
+        precio_ufs = precio_ufs,
+        comuna=Comuna.objects.get(nombre=comuna),
+        propietario = User.objects.get(username=username)
         )
 
     inmueble.save()
     return inmueble
 
-def actualizar_inmueble(inmueble_id, nombre,descripcion, direccion, comuna, mts_cuadrados, mts_totales, precio_mensual, cant_estacionamientos, cant_habitaciones, cant_banos, disponible, eliminado):
-    inmu = Inmueble.objects(id=inmueble_id)
-    inmu.nombre=nombre,
-    inmu.descripcion=descripcion, 
-    inmu.direccion=direccion, 
-    inmu.comuna=comuna,
-    inmu.mts_cuadrados=mts_cuadrados,
-    inmu.mts_totales=mts_totales, 
-    inmu.precio_mensual=precio_mensual, 
-    inmu.cant_estacionamientos=cant_estacionamientos, 
-    inmu.cant_habitaciones=cant_habitaciones, 
-    inmu.cant_banos=cant_banos, 
-    inmu.disponible=disponible, 
-    inmu.eliminado=eliminado
+def actualizar_inmueble(inmueble_id, nombre,descripcion, direccion,  mts_cons, mts_ttls,  num_estacionamientos,num_banos,tipo_inmueble,precio_mensual, precio_ufs,comuna):
+    inmu = Inmueble.objects.get(id=inmueble_id)
+    comuna = Comuna.objects.get(nombre=comuna)
+    inmu.nombre=nombre
+    inmu.descripcion=descripcion 
+    inmu.direccion=direccion 
+    inmu.mts_cons=mts_cons
+    inmu.mts_ttls=mts_ttls 
+    inmu.num_estacionamientos=num_estacionamientos 
+    inmu.num_banos=num_banos 
+    inmu.tipo_inmueble = tipo_inmueble
+    inmu.precio_mensual=precio_mensual
+    inmu.precio_ufs=precio_ufs
+    inmu.comuna = comuna
     
     inmu.save()
     return inmu
 
 def eliminar_inmueble(inmueble_id):
     inmueble = Inmueble.objects.get(id=inmueble_id)
-    inmueble.eliminado = True
-    inmueble.save()
+    inmueble.delete()
 
 def crear_user(username, first_name, last_name, email,password, pass_confirm, direccion,telefono=None ):
     if password != pass_confirm:
