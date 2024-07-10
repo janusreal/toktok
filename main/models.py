@@ -29,6 +29,7 @@ class Inmueble(models.Model):
     comuna = models.ForeignKey(Comuna, related_name='inmuebles',on_delete=models.RESTRICT)
     propietario = models.ForeignKey(User, on_delete=models.RESTRICT, related_name='inmuebles')
     # falta lo de la comuna y desarrollar las funcionalidades
+    eliminado = models.BooleanField(default=False)
     
 class Solicitud(models.Model):
     estados = (('pendiente','Pendiente'),('rechazada','Rechazada'),('aprobada','Aprobada'))
