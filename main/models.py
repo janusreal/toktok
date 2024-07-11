@@ -9,10 +9,15 @@ class UserProfile(models.Model):
     direccion = models.CharField(max_length=255)
     telefono = models.CharField(max_length=255, null=True)
     
-    
-class Comuna(models.Model):
+class Region(models.Model):
+    cod = models.CharField(max_length=2, primary_key=True)
     nombre = models.CharField(max_length=255)
     
+class Comuna(models.Model):
+    cod=models.CharField(max_length=5, primary_key=True)
+    nombre = models.CharField(max_length=255)
+    region = models.ForeignKey(Region,on_delete=models.RESTRICT,related_name='comunas')
+
 class Inmueble(models.Model):
     #nombre, descripcion,mts_cons,mts_ttl
     tipos =(('casa','Casa'),('departamento','Departamento'),('bodega','Bodega'))

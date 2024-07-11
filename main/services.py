@@ -1,9 +1,10 @@
 from django.contrib.auth.models import User
 from main.models import *
 from django.db.utils import IntegrityError
+
 #funciones de usuario
 
-def crear_inmueble(nombre,descripcion, direccion,  mts_cons, mts_ttls,  num_estacionamientos,num_banos,tipo_inmueble,precio_mensual, precio_ufs,comuna, username):
+def crear_inmueble(nombre,descripcion, direccion,  mts_cons, mts_ttls,  num_estacionamientos,num_banos,tipo_inmueble,precio_mensual, precio_ufs,comuna_cod, username):
     inmueble = Inmueble(
         nombre=nombre,
         descripcion=descripcion, 
@@ -15,7 +16,7 @@ def crear_inmueble(nombre,descripcion, direccion,  mts_cons, mts_ttls,  num_esta
         tipo_inmueble = tipo_inmueble,
         precio_mensual=precio_mensual, 
         precio_ufs = precio_ufs,
-        comuna=Comuna.objects.get(nombre=comuna),
+        comuna=Comuna.objects.get(cod=comuna_cod),
         propietario = User.objects.get(username=username)
         )
 

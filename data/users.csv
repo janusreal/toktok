@@ -1,0 +1,11 @@
+RUT;Nombre;Apellido;Correo;Password;RepitePassword;Dirección;Teléfono
+12345678-9;Lionel;Messi;lionel.messi@example.com;12345;12345;Calle Falsa 123;555-1234
+23456789-0;Cristiano;Ronaldo;cristiano.ronaldo@example.com;23456;23456;Avenida Siempre Viva 456;555-2345
+34567890-1;Neymar;Jr;neymar.jr@example.com;34567;34567;Boulevard Ficticio 789;555-3456
+45678901-2;Kylian;Mbappe;kylian.mbappe@example.com;45678;45678;Plaza Inventada 101;555-4567
+56789012-3;Luka;Modric;luka.modric@example.com;56789;56789;Calle Imaginaria 202;555-5678
+67890123-4;Kevin;De Bruyne;kevin.debruyne@example.com;67890;67890;Camino Irreal 303;555-6789
+78901234-5;Robert;Lewandowski;robert.lewandowski@example.com;78901;78901;Avenida Fantasía 404;555-7890
+89012345-6;Mohamed;Salah;mohamed.salah@example.com;89012;89012;Calle Ilusión 505;555-8901
+90123456-7;Virgil;van Dijk;virgil.vandijk@example.com;90123;90123;Boulevard Invento 606;555-9012
+01234567-8;Sadio;Mane;sadio.mane@example.com;01234;01234;Plaza Ficticia 707;555-0123
