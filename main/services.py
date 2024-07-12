@@ -83,3 +83,8 @@ def editar_user(username, first_name, last_name, email,password, direccion,telef
     user_profile.telefono = telefono
     user_profile.save()
 
+def get_inmuebles_comunas(filtro):
+    if filtro is None:
+        return Inmueble.objects.all().order_by('comuna')
+    
+    return Inmueble.objects.filter(nombre__icontains=filtro).order_by('comuna')

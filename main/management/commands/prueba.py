@@ -2,6 +2,7 @@ from typing import Any
 from django.core.management.base import BaseCommand
 from main.services import *
 
+
 class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         
@@ -13,4 +14,16 @@ class Command(BaseCommand):
         
         #actualizar_inmueble(1,'Casa espaciosa','Hermosa casa con patio', 'Lolco 2367',120,'400','5','2','Casa','500000',13.30,'Huechuraba')
         
-        eliminar_inmueble(1)
+        #eliminar_inmueble(1)
+        
+        #inmuebles = get_inmuebles_comunas()
+        
+        #import pdb; pdb.set_trace()
+        
+        archivo = open('data/inmuebles_comuna.txt',encoding="utf-8")
+        inmuebles = get_inmuebles_comunas()
+        
+        for inmueble in inmuebles:
+            linea = f'{inmueble.nombre}\t{inmueble.descripcion}\t{inmueble.comuna.nombre}'
+            print(linea)   
+        
