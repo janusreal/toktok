@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from main.models import *
+from main.models import User, UserProfile, Inmueble, Comuna
 from django.db.utils import IntegrityError
 
 #funciones de usuario
@@ -45,11 +45,20 @@ def eliminar_inmueble(inmueble_id):
     inmueble = Inmueble.objects.get(id=inmueble_id)
     inmueble.delete()
 
-def crear_user(username, first_name, last_name, email,password, pass_confirm, direccion,telefono=None ):
+def crear_user(username,first_name,last_name, email, password,pass_confirm, direccion,telefono=None):
+    
     if password != pass_confirm:
         return False, 'Las contraseñas no coinciden'
+    
     try:
-        user = User.objects.create_user(username, email, password, first_name=first_name,last_name =last_name)
+        user = User.objects.create_user(
+            username, 
+            email, 
+            password, 
+            first_name=first_name,
+            last_name =last_name
+            )
+        
     except IntegrityError:
         return False, 'RUT duplicado'
     

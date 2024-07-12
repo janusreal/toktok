@@ -1,0 +1,17 @@
+nombre;descripcion;direccion;metros_construidos;Metros totales;cantidad estacionamientos;numero de baños;tipo de inmueble;precio mensual;precio en uf;comuna;rut
+Casa espaciosa;Bella casa ubicada en barrio seguro;Calle siempre viva 7819;120;400;2;2;Casa;500000;3.5;13114;12345678-9
+Departamento moderno;Moderno departamento en edificio nuevo;Av. Principal 123 Dpto 101;80;100;1;1;Departamento;350000;2.3;13123;23456789-0
+Casa acogedora;Casa de un piso con jardín amplio;Calle Ficticia 456;90;300;1;1;Casa;450000;3.1;13123;01234567-8
+Loft estilo industrial;Loft con diseño moderno y excelente ubicación;Calle Arte 789;60;70;0;1;Departamento;400000;2.7;13101;45678901-2
+Casa familiar;Amplia casa perfecta para familias;Calle Familiar 1011;150;500;2;3;Casa;550000;3.8;13110;56789012-3
+Penthouse de lujo;Penthouse con vista panorámica;Av. Lujo 1213 Piso 10;200;250;2;3;Departamento;800000;5.6;13132;67890123-4
+Estudio céntrico;Estudio ideal para estudiantes;Calle Universidad 1415;40;50;0;1;Departamento;200000;1.4;13101;78901234-5
+Casa con piscina;Casa con amplio jardín y piscina;Calle Verano 1617;140;450;2;2;Casa;600000;4.2;13122;89012345-6
+Departamento familiar;Departamento amplio y luminoso;Av. Familia 1819 Dpto 202;110;130;1;2;Departamento;500000;3.5;13123;90123456-7
+Casa estilo colonial;Hermosa casa con detalles coloniales;Calle Historia 2021;130;350;2;2;Casa;480000;3.2;13113;89012345-6
+Dúplex moderno;Dúplex con acabados modernos;Calle Innovación 2223;100;120;1;2;Casa;420000;2.9;13123;89012345-6
+Casa con quincho;Casa con quincho y terraza;Calle Ocio 2425;125;380;2;2;Casa;520000;3.6;13118;89012345-6
+Apartamento elegante;Apartamento en edificio con amenities;Av. Elegancia 2627 Dpto 303;95;110;1;2;Departamento;470000;3.3;13123;89012345-6
+Casa campestre;Casa en zona tranquila y verde;Calle Campo 2829;160;600;3;3;Casa;580000;4.0;13301;45678901-2
+Departamento pequeño;Departamento económico y bien ubicado;Calle Centro 3031 Dpto 404;55;65;1;1;Departamento;300000;2.1;13101;56789012-3
+Villa con jardín;Villa con jardín y patio interior;Calle Villa 3233;135;400;2;2;Departamento;540000;3.7;13110;67890123-4
