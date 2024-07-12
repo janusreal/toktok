@@ -88,3 +88,11 @@ def get_inmuebles_comunas(filtro):
         return Inmueble.objects.all().order_by('comuna')
     
     return Inmueble.objects.filter(nombre__icontains=filtro).order_by('comuna')
+
+def get_inmuebles_regiones(filtro):
+    if filtro is None:
+        query = "SELECT main_inmueble.*, main_region.nombre as region_nombre FROM main_inmueble JOIN main_comuna ON main_inmueble.comuna_id = main_comuna.cod JOIN main_region ON main_comuna.region_id = main_region.cod ORDER BY main_region.cod"
+        
+        return Inmueble.objects.raw(query)
+    
+    return Inmueble.objects.filter(nombre__icontains=filtro).order_by('region')
