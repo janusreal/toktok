@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from main.models import User, UserProfile, Inmueble, Comuna
 from django.db.utils import IntegrityError
+from django.db.models import Q
+from django.db import connection
 
 #funciones de usuario
 
@@ -87,12 +89,20 @@ def get_inmuebles_comunas(filtro):
     if filtro is None:
         return Inmueble.objects.all().order_by('comuna')
     
-    return Inmueble.objects.filter(nombre__icontains=filtro).order_by('comuna')
+    #return Inmueble.objects.filter(nombre__icontains=filtro).order_by('comuna')
+    return Inmueble.objects.filter(Q(nombre__icontains=filtro) | Q(nombre__icontains=filtro)).order_by('comuna')
+
 
 def get_inmuebles_regiones(filtro):
-    if filtro is None:
-        query = "SELECT main_inmueble.*, main_region.nombre as region_nombre FROM main_inmueble JOIN main_comuna ON main_inmueble.comuna_id = main_comuna.cod JOIN main_region ON main_comuna.region_id = main_region.cod ORDER BY main_region.cod"
-        
-        return Inmueble.objects.raw(query)
+
+    query = "SELECT main_inmueble.nombre as nombre_inmueble,main_inmueble.nombre as descripcion_inmueble, main_region.nombre as region_nombre FROM main_inmueble JOIN main_comuna ON main_inmueble.comuna_id = main_comuna.cod JOIN main_region ON main_comuna.region_id = main_region.cod ORDER BY main_region.cod"
     
-    return Inmueble.objects.filter(nombre__icontains=filtro).order_by('region')
+    if filtro is not None:
+        query = f"SELECT main_inmueble.nombre as nombre_inmueble, main_inmueble.nombre as descripcion_inmueble,main_region.nombre as region_nombre FROM main_inmueble JOIN main_comuna ON main_inmueble.comuna_id = main_comuna.cod JOIN main_region ON main_comuna.region_id = main_region.cod where main_inmueble.nombre like '%{filtro}%' or main_inmueble.descripcion like '%{filtro}%' ORDER BY main_region.cod"
+        
+    cursor = connection.cursor()
+    cursor.execute(query)
+    registros = cursor.fetchall()
+    return registros
+
+    #return Inmueble.objects.filter(nombre__icontains=filtro).order_by('region')

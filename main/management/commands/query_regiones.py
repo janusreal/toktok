@@ -18,7 +18,12 @@ class Command(BaseCommand):
 
         archivo = open('data/results_regiones.txt','w', encoding='utf-8')
         for inmueble in inmuebles:
+            linea = f'{inmueble[0]}\t{inmueble[1]}\t{inmueble[2]}\n'
+            archivo.write(linea)
+            
+            '''
             region_nombre = getattr(inmueble, 'region_nombre','Nombre de region no disponible')
             linea = f'{inmueble.nombre}\t{inmueble.descripcion}\t{region_nombre}\n'
             archivo.write(linea+"\n")
         archivo.close()
+'''
