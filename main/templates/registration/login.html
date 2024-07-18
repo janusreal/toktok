@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container align-items-center">
+  <div class="row py-4">
+    
+    <div class="col-6" style="height: 100%">
+      <h2>Formulario de acceso</h2>
+      {% for error in errores %}
+
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+      {% endfor %}
+
+
+      <form method="post" action="{% url 'login' %}" id="form">
+        {% csrf_token %}
+        <div class="row justify-content-center" style="width: 40%; margin-left: auto; margin-right: auto;">
+          {{ form.as_p }}
+          <button type="submit">Acceder</button>
+        </div>
+        
+        
+      </form>
+      <!-- <a href="/accounts/register">Crear una cuenta</a> -->
+    </div>
+    <div class="col-6">
+      <img src="{% static 'window.png ' %}" width="420" alt="">
+  </div>
+  </div>
+  
+    
+</div>
+        {% endblock %}

@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row">
+
+
+        <div class="col">
+            
+            <h3 class="text-center">Editar datos personales</h3>
+        
+        
+            <form action="/edit-user/" method="post">
+                {% csrf_token %}
+                nombre:<br>
+                <input type="text" name="first_name" id="first_name" value="{{ user.first_name}}" required>
+                <br>
+                apellido:<br>
+                <input type="text" name="last_name" id="last_name" value="{{ user.last_name}}" required>
+                <br>
+                email<br>
+                <input type="email" name="email" value="{{ user.email}}" id="" required>
+                <br>
+                direccion<br>
+                <input type="text" name="direccion" value="{{ user.usuario.direccion}}" id="" required>
+                <br>
+                telefono<br>
+                <input type="" name="telefono" value="{{ user.usuario.telefono}}" id="">
+                <br>
+                <input type="submit" value="Enviar">
+    
+            </form>
+        </div>
+        <div class="col-3"><h3 class="text-center">Tus propiedades</h3></div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h3 class="text-center">Cambiar contraseña</h3>
+        
+        <form action="/accounts/change-pass/" method="post">
+            {% csrf_token %}
+            <label for="password">Ingrese Nueva Password</label>
+            <input type="password" name="password" id="" required><br>
+            <label for="Repita">Repita la contraseña</label>
+            <input type="password" name="password_repeat" id="" required>
+
+            <input type="submit" value="Cambiar">
+        </form>
+        
+        </div>
+</div>
+        
+</div>
+    
+
+{% endblock %}

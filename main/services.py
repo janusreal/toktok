@@ -3,6 +3,7 @@ from main.models import User, UserProfile, Inmueble, Comuna
 from django.db.utils import IntegrityError
 from django.db.models import Q
 from django.db import connection
+from django.contrib import messages
 
 #funciones de usuario
 
@@ -106,3 +107,23 @@ def get_inmuebles_regiones(filtro):
     return registros
 
     #return Inmueble.objects.filter(nombre__icontains=filtro).order_by('region')
+    
+def editar_user_sin_password(username, first_name, last_name, email, direccion,telefono=None):
+    user = User.objects.get(username=username)
+    user.first_name = first_name
+    user.last_name = last_name
+    user.email = email
+    user.save()
+    
+    user_profile = UserProfile.objects.get(user=user)
+    user_profile.direccion = direccion
+    user_profile.telefono = telefono
+    user_profile.save()
+    
+def cambiar_password(req, password, repeat_password):
+    if password != repeat_password:
+        messages.error(req, 'No coinciden ambas contraseñas')
+        return
+    req.user.set_password(password)
+    req.user.save()
+    messages.success(req,'La contraseña ha sido actualizada')
