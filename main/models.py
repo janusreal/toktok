@@ -5,18 +5,29 @@ from django.core.validators import MinValueValidator
 # Create your models here.
 
 class UserProfile(models.Model):
+    roles = (('arrendador','Arrendador'),('arrendatario','Arrendatario'), ('admin','Admin'))
     user = models.OneToOneField(User, related_name='usuario', on_delete=models.CASCADE)
     direccion = models.CharField(max_length=255)
-    telefono = models.CharField(max_length=255, null=True)
+    telefono = models.CharField(max_length=255, null=True, blank=True)
+    rol = models.CharField(max_length=255, choices=roles, default='arrendatario')
+    
+    def __str__(self):
+        return f'{self.user.first_name} {self.user.last_name} ({self.rol})'
     
 class Region(models.Model):
     cod = models.CharField(max_length=2, primary_key=True)
     nombre = models.CharField(max_length=255)
     
+    def __str__(self) -> str:
+        return f'{self.nombre} ({self.cod})'
+    
 class Comuna(models.Model):
     cod=models.CharField(max_length=5, primary_key=True)
     nombre = models.CharField(max_length=255)
     region = models.ForeignKey(Region,on_delete=models.RESTRICT,related_name='comunas')
+    
+    def __str__(self) -> str:
+        return f'{self.nombre} ({self.cod})'
 
 class Inmueble(models.Model):
     #nombre, descripcion,mts_cons,mts_ttl
@@ -27,6 +38,7 @@ class Inmueble(models.Model):
     mts_cons = models.IntegerField(validators=[MinValueValidator(1)])
     mts_ttls = models.IntegerField(validators=[MinValueValidator(1)])
     num_estacionamientos = models.IntegerField(validators=[MinValueValidator(0)],default=0)
+    num_habitaciones = models.IntegerField(validators=[MinValueValidator(0)],default=0)
     num_banos = models.IntegerField(validators=[MinValueValidator(0)])
     tipo_inmueble = models.CharField(max_length=255,choices=tipos)
     precio_mensual = models.IntegerField(validators=[MinValueValidator(1000)],null=True)

@@ -26,11 +26,32 @@
                 telefono<br>
                 <input type="" name="telefono" value="{{ user.usuario.telefono}}" id="">
                 <br>
+                <div class="mb-3">
+                    Arrendatario: <input type="radio" name="rol" id="arrendatario" value="arrendatario" {% if user.usuario.rol == 'arrendatario' %}checked{% endif %} required>
+                    Arrendador: <input type="radio" name="rol" id="arrendador" value="arrendador" {% if user.usuario.rol == 'arrendador' %}checked{% endif %} required>
+                </div>
                 <input type="submit" value="Enviar">
     
             </form>
         </div>
-        <div class="col-3"><h3 class="text-center">Tus propiedades</h3></div>
+        <div class="col-3"><h3 class="text-center">Propiedades en arriendo</h3>
+            
+            {% if user.usuario.rol == 'arrendador' or user.is_staff %}
+            
+            <p>+ <a href="{% url 'nuevo_inmueble' %}">Agregar inmueble</a></p>
+
+        {% endif %}
+            <ul>
+                <li>Inmueble 1</li>
+                <li>Inmueble 2</li>
+                <li>Inmueble 3</li>
+                <li>Inmueble 4</li>
+                <li>Inmueble 5</li>
+            </ul>
+        
+        
+        
+        </div>
     </div>
     <div class="row">
         <div class="col">

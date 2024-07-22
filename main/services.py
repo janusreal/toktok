@@ -7,22 +7,25 @@ from django.contrib import messages
 
 #funciones de usuario
 
-def crear_inmueble(nombre,descripcion, direccion,  mts_cons, mts_ttls,  num_estacionamientos,num_banos,tipo_inmueble,precio_mensual, precio_ufs,comuna_cod, username):
+def crear_inmueble_service(nombre, descripcion, direccion, mts_cons, mts_ttls, num_estacionamientos, num_banos, tipo_inmueble, precio_mensual, precio_ufs, comuna_cod, username):
+    comuna = Comuna.objects.get(cod=comuna_cod)
+    propietario = User.objects.get(username=username)
+    
     inmueble = Inmueble(
         nombre=nombre,
-        descripcion=descripcion, 
-        direccion=direccion, 
+        descripcion=descripcion,
+        direccion=direccion,
         mts_cons=mts_cons,
-        mts_ttls=mts_ttls, 
+        mts_ttls=mts_ttls,
         num_estacionamientos=num_estacionamientos,
-        num_banos = num_banos,
-        tipo_inmueble = tipo_inmueble,
-        precio_mensual=precio_mensual, 
-        precio_ufs = precio_ufs,
-        comuna=Comuna.objects.get(cod=comuna_cod),
-        propietario = User.objects.get(username=username)
-        )
-
+        num_banos=num_banos,
+        tipo_inmueble=tipo_inmueble,
+        precio_mensual=precio_mensual,
+        precio_ufs=precio_ufs,
+        comuna=comuna,
+        propietario=propietario
+    )
+    
     inmueble.save()
     return inmueble
 
@@ -108,7 +111,7 @@ def get_inmuebles_regiones(filtro):
 
     #return Inmueble.objects.filter(nombre__icontains=filtro).order_by('region')
     
-def editar_user_sin_password(username, first_name, last_name, email, direccion,telefono=None):
+def editar_user_sin_password(username, first_name, last_name, email, direccion,rol,telefono=None):
     user = User.objects.get(username=username)
     user.first_name = first_name
     user.last_name = last_name
@@ -118,6 +121,7 @@ def editar_user_sin_password(username, first_name, last_name, email, direccion,t
     user_profile = UserProfile.objects.get(user=user)
     user_profile.direccion = direccion
     user_profile.telefono = telefono
+    user_profile.rol = rol
     user_profile.save()
     
 def cambiar_password(req, password, repeat_password):
@@ -127,3 +131,4 @@ def cambiar_password(req, password, repeat_password):
     req.user.set_password(password)
     req.user.save()
     messages.success(req,'La contraseña ha sido actualizada')
+
