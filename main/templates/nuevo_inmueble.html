@@ -4,7 +4,7 @@
 
     <h2>Formulario para agregar Propiedad</h2>
 
-    <form method="POST" action="/inmuebles/crear/">
+    <form method="POST" action="/crear-inmueble/">
 
       {% csrf_token %}
       <div class="row">
@@ -13,7 +13,7 @@
         <div class="col p-3">
           <div class="mb-3">
             <label for="nombre" class="form-label">Nombre</label>
-            <input type="text" class="form-control" id="nombre"
+            <input type="text" name="nombre" class="form-control" id="nombre"
               placeholder="Nombre" required>
           </div>
           <div class="mb-3">
@@ -79,7 +79,7 @@
           <div class="mb-3">
             <label for="Comuna">Tipo de Inmueble</label>
             <select class="form-select" id="floatingSelect"
-              aria-label="Floating label select example" required>
+              aria-label="Floating label select example" name="tipo_inmueble" required>
               <option selected>Seleccione tipo de inmueble</option>
               {% for tipo in tipos_inmueble %}
               <option value="{{tipo.0}}">{{tipo.1}}</option>
@@ -89,7 +89,7 @@
 
           <div class="mb-3">
             <label for="Region">Region</label>
-            <select class="form-select" id="region_cod" name="region_cod" required>
+            <select class="form-select" id="region_cod" name="region_cod">
               <option selected>Selecciona una región</option>
               {% for region in regiones %}
               <option value="{{region.cod}}">{{region.nombre}}</option>
@@ -100,8 +100,7 @@
 
           <div class="mb-3">
             <label for="Comuna">Comuna</label>
-            <select class="form-select" id="comuna_cod" name="comuna_cod"
-               required>
+            <select class="form-select" id="comuna_cod" name="comuna_cod">
               <option selected>Selecciona una comuna</option>
               {% for comuna in comunas %}
               <option value="{{comuna.cod}}">{{comuna.nombre}}</option>
@@ -125,7 +124,7 @@
       </div>
     </div>
   </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="submit" class="btn btn-primary">Enviar datos</button>
 
     </form>
 

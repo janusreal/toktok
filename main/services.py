@@ -7,7 +7,7 @@ from django.contrib import messages
 
 #funciones de usuario
 
-def crear_inmueble_service(nombre, descripcion, direccion, mts_cons, mts_ttls, num_estacionamientos, num_banos, tipo_inmueble, precio_mensual, precio_ufs, comuna_cod, username):
+def crear_inmueble(nombre, descripcion, direccion, mts_cons, mts_ttls, num_estacionamientos,num_habitaciones, num_banos, tipo_inmueble, precio_mensual, precio_ufs, comuna_cod, username):
     comuna = Comuna.objects.get(cod=comuna_cod)
     propietario = User.objects.get(username=username)
     
@@ -18,6 +18,7 @@ def crear_inmueble_service(nombre, descripcion, direccion, mts_cons, mts_ttls, n
         mts_cons=mts_cons,
         mts_ttls=mts_ttls,
         num_estacionamientos=num_estacionamientos,
+        num_habitaciones = num_habitaciones,
         num_banos=num_banos,
         tipo_inmueble=tipo_inmueble,
         precio_mensual=precio_mensual,

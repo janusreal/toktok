@@ -5,8 +5,7 @@ from django.contrib import messages
 from django.contrib.auth import login
 from main.forms import FormularioAutenticacionPersonalizado
 from main.models import Inmueble, Region, Comuna
-from main.services import editar_user_sin_password, cambiar_password, crear_inmueble_service
-
+from main.services import editar_user_sin_password, cambiar_password, crear_inmueble as crear_inmueble_service
 
 
 @login_required
@@ -130,26 +129,14 @@ def nuevo_inmueble(req):
     }
     return render(req,'nuevo_inmueble.html',context)
 
-'''
-@user_passes_test(solo_arrendadores)
-def nuevo_inmueble(req):
-    regiones = Region.objects.all()
-    comunas = Comuna.objects.all()
-    context = {
-        'tipos_inmueble':Inmueble.tipos,
-        'regiones':regiones,
-        'comunas':comunas
-    }
-    return render(req,'crear_inmueble.html',context)
-'''
 
 
 @user_passes_test(solo_arrendadores)
 def crear_inmueble(req):
-    #imprimimos lo que llega del formulario
-    print(req.POST)
+    #obtenemos el rut del logueado
+    propietario_rut = req.user.username
     crear_inmueble_service(
-            req.POST['nombre=nombre'],
+            req.POST['nombre'],
             req.POST['descripcion'],
             req.POST['direccion'],
             int(req.POST['mts_cons']),
@@ -158,11 +145,12 @@ def crear_inmueble(req):
             int(req.POST['num_habitaciones']),
             int(req.POST['num_banos']),
             req.POST['tipo_inmueble'],
-            req.POST['precio_mensual'],
-            req.POST['precio_ufs'],
-            req.POST['comuna'],
-    )
-    
-    return HttpResponse('Llegó el formulario')
+            int(req.POST['precio_mensual']),
+            int(req.POST['precio_ufs']),
+            req.POST['comuna_cod'],
+            propietario_rut
+            )
+    messages.success(req, 'Nuevo inmueble agregado')
+    return redirect('/accounts/profile')
 
 

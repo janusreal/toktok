@@ -27,5 +27,6 @@ urlpatterns = [
     path('accounts/change-pass/', change_password, name="change_password"),
     path('arrendadores/', solo_arrendadores, name='solo_arrendadores'),
     path('arrendatarios/', solo_arrendatarios, name='solo_arrendatarios'),
+    path('crear-inmueble/',crear_inmueble, name="crear_inmueble"),
     path('nuevo-inmueble/',nuevo_inmueble, name="nuevo_inmueble")
     ]
