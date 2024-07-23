@@ -3,74 +3,127 @@
 <div class="container">
     <div class="row">
 
+        <div class="col-8">
 
-        <div class="col">
-            
             <h3 class="text-center">Editar datos personales</h3>
-        
-        
-            <form action="/edit-user/" method="post">
-                {% csrf_token %}
-                nombre:<br>
-                <input type="text" name="first_name" id="first_name" value="{{ user.first_name}}" required>
-                <br>
-                apellido:<br>
-                <input type="text" name="last_name" id="last_name" value="{{ user.last_name}}" required>
-                <br>
-                email<br>
-                <input type="email" name="email" value="{{ user.email}}" id="" required>
-                <br>
-                direccion<br>
-                <input type="text" name="direccion" value="{{ user.usuario.direccion}}" id="" required>
-                <br>
-                telefono<br>
-                <input type="" name="telefono" value="{{ user.usuario.telefono}}" id="">
-                <br>
-                <div class="mb-3">
-                    Arrendatario: <input type="radio" name="rol" id="arrendatario" value="arrendatario" {% if user.usuario.rol == 'arrendatario' %}checked{% endif %} required>
-                    Arrendador: <input type="radio" name="rol" id="arrendador" value="arrendador" {% if user.usuario.rol == 'arrendador' %}checked{% endif %} required>
+
+            <div class="row justify-content-center">
+                <div class="col-8">
+
+                    <form action="/edit-user/" method="post">
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            <label for="Nombre"
+                                class="form-label">Nombre</label>
+                            <input type="text" class="form-control"
+                                name="first_name"
+                                placeholder="Nombre"
+                                value="{{ user.first_name}}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="Nombre"
+                                class="form-label">Apellido</label>
+                            <input type="text" class="form-control"
+                                name="last_name"
+                                placeholder="Apellido"
+                                value="{{ user.last_name}}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control"
+                                name="email" value="{{ user.email}}"
+                                placeholder="name@ejemplo.com" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="direccion"
+                                class="form-label">Dirección</label>
+                            <input type="text" class="form-control"
+                                name="direccion" name="direccion"
+                                value="{{ user.usuario.direccion}}"
+                                placeholder="Calle número" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="telefono"
+                                class="form-label">Teléfono</label>
+                            <input type="telefono" class="form-control"
+                                name="telefono"
+                                value="{{ user.usuario.telefono}}"
+                                placeholder="# nro telefónico" required>
+                        </div>
+                        <div class="mb-3">
+                            Arrendatario:
+                            <input 
+                                type="radio"
+                                name="rol"
+                                id="arrendatario"
+                                value="arrendatario"
+                                {% if user.usuario.rol == 'arrendatario' %}checked{%endif %}
+                                required>
+                            Arrendador: 
+                            <input 
+                            type="radio"
+                            name="rol"
+                            id="arrendador"
+                            value="arrendador"
+                            {% if user.usuario.rol == 'arrendador' %}checked{%endif%}
+                            required>
+                        </div>
+                        <button type="submit"
+                            class="btn btn-primary mb-3">Actualizar
+                            datos</button>
+
+                    </form>
+
                 </div>
-                <input type="submit" value="Enviar">
-    
+
+                <div class="col-8">
+                    <h3 class="text-center">Cambiar contraseña</h3>
+
+            <form action="/accounts/change-pass/" method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Contraseña</label>
+                    <input type="password" class="form-control" id="exampleInputPassword1">
+                  </div>
+
+                <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Repita su contraseña</label>
+    <input type="password_repeat" class="form-control">
+  </div>
+
+  <button type="submit" class="btn btn-primary">Actualizar contraseña</button>
             </form>
+
+                </div>
+            </div>
+
         </div>
         <div class="col-3"><h3 class="text-center">Propiedades en arriendo</h3>
-            
+
             {% if user.usuario.rol == 'arrendador' or user.is_staff %}
-            
+
             <p>+ <a href="{% url 'nuevo_inmueble' %}">Agregar inmueble</a></p>
 
-        {% endif %}
+            {% endif %}
             <ul>
-                <li>Inmueble 1</li>
-                <li>Inmueble 2</li>
-                <li>Inmueble 3</li>
-                <li>Inmueble 4</li>
-                <li>Inmueble 5</li>
+                {% for inmueble in inmuebles %}
+                <li>{{ inmueble.nombre }}</li>
+                {% endfor %}
+
             </ul>
-        
-        
-        
+
         </div>
     </div>
     <div class="row">
         <div class="col">
-            <h3 class="text-center">Cambiar contraseña</h3>
-        
-        <form action="/accounts/change-pass/" method="post">
-            {% csrf_token %}
-            <label for="password">Ingrese Nueva Password</label>
-            <input type="password" name="password" id="" required><br>
-            <label for="Repita">Repita la contraseña</label>
-            <input type="password" name="password_repeat" id="" required>
+            
 
-            <input type="submit" value="Cambiar">
-        </form>
-        
         </div>
+    </div>
+
 </div>
-        
-</div>
-    
 
 {% endblock %}

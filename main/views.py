@@ -3,35 +3,22 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from django.contrib.auth import login
-from main.forms import FormularioAutenticacionPersonalizado
 from main.models import Inmueble, Region, Comuna
 from main.services import editar_user_sin_password, cambiar_password, crear_inmueble as crear_inmueble_service
-
+from main.forms import InmuebleForm
 
 @login_required
 def home(req):
     return render(req, 'home.html')
-
-def formInmueble():
-    pass
-
-def login_view(req):
-    if req.method == 'POST':
-        form = FormularioAutenticacionPersonalizado(req,data=req.POST)
-        if form.is_valid():
-            user = form.get_user()
-            login(req,user)
-            return redirect('/')
-    else:
-        form = FormularioAutenticacionPersonalizado()
-        
-    return render(req,'login.html',{'form':form})
 
 
 #funcion profile para autentificados
 @login_required
 def profile(req):
     return render(req, 'profile.html')
+
+
+
 
 @login_required
 def edit_user(req):
@@ -43,8 +30,8 @@ def edit_user(req):
             req.POST['last_name'],
             req.POST['email'],
             req.POST['direccion'],
+            req.POST['rol'],
             req.POST['telefono'],
-            req.POST['rol']
         )
     else:
         editar_user_sin_password(
@@ -153,4 +140,20 @@ def crear_inmueble(req):
     messages.success(req, 'Nuevo inmueble agregado')
     return redirect('/accounts/profile')
 
+@user_passes_test(solo_arrendadores)
+def editar_inmueble(req,id):
+    if req.method == 'GET':
+        inmueble = Inmueble.objects.get(id=id)
+        regiones = Region.objects.all()
+        comunas = Comuna.objects.all()
+        cod_region = inmueble.comuna.region.cod
+        context = {
+            'inmueble':inmueble,
+            'regiones':regiones,
+            'comunas':comunas,
+            'cod_region':cod_region
+        }
+        return render(req, 'editar_inmueble.html',context)
+    else:
+        return HttpResponse('Es un POST')
 

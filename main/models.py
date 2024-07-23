@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
+from django import forms
+
 
 # Create your models here.
 
@@ -32,6 +34,7 @@ class Comuna(models.Model):
 class Inmueble(models.Model):
     #nombre, descripcion,mts_cons,mts_ttl
     tipos =(('casa','Casa'),('departamento','Departamento'),('bodega','Bodega'))
+    
     nombre = models.CharField(max_length=50)
     descripcion = models.TextField(max_length=1500)
     direccion = models.CharField(max_length=255)

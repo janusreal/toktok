@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="container">
+
+    <h2>Formulario para editar Propiedad {{ inmueble.id}}</h2>
+
+    <form method="POST" action="/editar_inmueble/">
+
+      {% csrf_token %}
+      <div class="row">
+    <div class="col-4" id="1ra columna">
+      <div class="row">
+        <div class="col p-3">
+          <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" name="nombre" class="form-control" id="nombre"
+              placeholder="Nombre" value="{{ inmueble.nombre }}" required>
+          </div>
+          <div class="mb-3">
+            <label for="descripcion">Descripción</label>
+            <textarea class="form-control" name="descripcion"
+              placeholder="Describa la propiedad" id="floatingTextarea2"
+              style="height: 100px" required>{{ inmueble.descripcion }}</textarea>
+
+          </div>
+
+          <div class="mb-3">
+            <label for="direccion" class="form-label">Dirección</label>
+            <input type="text" name="direccion" class="form-control" id
+              placeholder="Dirección" value="{{ inmueble.direccion }}" required>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-4" id="2da columna">
+      <div class="row">
+        <div class="col p-3">
+          <div class="mb-3">
+            <label for="metros construidos" class="form-label">Metros
+              construidos</label>
+            <input type="number" name="mts_cons" value="{{ inmueble.mts_cons }}" class="form-control" id
+              placeholder="Metros construidos" required>
+          </div>
+
+
+          <div class="mb-3">
+            <label for="metros totales" class="form-label">Metros
+              totales</label>
+            <input type="number" name="mts_ttls" value="{{ inmueble.mts_ttls }}"  class="form-control" id
+              placeholder="Metros construidos" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="num_estacionamientos" class="form-label">Nro de
+              Estacionamientos</label>
+            <input min="0" value="0" type="number" value="{{ inmueble.num_estacionamientos }}"  name="num_estacionamientos"
+              class="form-control" id placeholder="# estacionamientos" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="num_habitaciones" class="form-label">Nro
+              habitaciones</label>
+            <input min="0" value="0" type="number" value="{{ inmueble.num_habitaciones }}"  name="num_habitaciones"
+              class="form-control" id placeholder="# habitaciones" required>
+          </div>
+<div class="mb-3">
+            <label for="num_banos" class="form-label">Cant. de Baños</label>
+            <input min="0" type="number"value="{{ inmueble.num_banos }}"  name="num_banos"
+              class="form-control" id placeholder="# baños" required>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-4" id="3ra columna">
+      <div class="row">
+        <div class="col p-3">
+          
+
+          <div class="mb-3">
+            <label for="Comuna">Tipo de Inmueble</label>
+            <select class="form-select" id="floatingSelect"
+              aria-label="Floating label select example" name="tipo_inmueble" required>
+              <option selected>Seleccione tipo de inmueble</option>
+              {% for tt in inmueble.tipos %}
+              <option value="{{tt.0}}" 
+              {% if tt.0 == inmueble.tipo_inmueble %} selected {% endif %}
+              >{{tt.1}}
+            </option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="Region">Region</label>
+            <select class="form-select" id="region_cod" name="region_cod">
+              <option selected>Selecciona una región</option>
+              {% for region in regiones %}
+              <option value="{{region.cod}}" {% if region.cod == cod_region %} selected {% endif %}>{{region.nombre}}</option>
+              {% endfor %}
+            </select>
+
+          </div>
+
+          <div class="mb-3">
+            <label for="Comuna">Comuna</label>
+            <select class="form-select" id="comuna_cod" name="comuna_cod">
+              <option selected>Selecciona una comuna</option>
+              {% for comuna in comunas %}
+              <option 
+              value="{{comuna.cod}}"
+              {% if comuna.cod == inmueble.comuna_id %} selected {% endif %}>{{comuna.nombre}}</option>
+              {% endfor %}
+
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="precio_mensual" class="form-label">Precio (clp)</label>
+            <input min="1000" type="number"value="{{ inmueble.precio_mensual }}"  name="precio_mensual"
+              class="form-control" id placeholder="precio_mensual">
+          </div>
+
+          <div class="mb-3">
+            <label for="precio_ufs" class="form-label">precio_ufs</label>
+            <input type="text" name="precio_ufs" value="{{ inmueble.precio_ufs }}"  class="form-control" id
+              placeholder="precio_ufs">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+      <button type="submit" class="btn btn-primary">Enviar datos</button>
+
+    </form>
+
+  </form>
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script>
+
+
+
+function filtrar_comunas(){
+  const cod_seleccionado = $(this).val()
+  console.log('Dime algo al menos')
+  $('#comuna_cod option').each(function(){
+      const comuna = $(this)
+      const cod_comuna = comuna.val()
+      if(cod_seleccionado == cod_comuna.substring(0,2)){
+          comuna.show()
+      }else{
+          comuna.hide()
+      }
+  })
+  }
+
+  $('#region_cod').on('change', filtrar_comunas)
+
+</script>
+
+{% endblock %}

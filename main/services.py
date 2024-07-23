@@ -30,6 +30,8 @@ def crear_inmueble(nombre, descripcion, direccion, mts_cons, mts_ttls, num_estac
     inmueble.save()
     return inmueble
 
+
+
 def actualizar_inmueble(inmueble_id, nombre,descripcion, direccion,  mts_cons, mts_ttls,  num_estacionamientos,num_banos,tipo_inmueble,precio_mensual, precio_ufs,comuna):
     inmu = Inmueble.objects.get(id=inmueble_id)
     comuna = Comuna.objects.get(nombre=comuna)
@@ -47,6 +49,9 @@ def actualizar_inmueble(inmueble_id, nombre,descripcion, direccion,  mts_cons, m
     
     inmu.save()
     return inmu
+
+
+
 
 def eliminar_inmueble(inmueble_id):
     inmueble = Inmueble.objects.get(id=inmueble_id)

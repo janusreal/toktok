@@ -1,36 +1,82 @@
 {% extends 'base.html' %}
 {% load static %}
+
+{% block css %}
+<style>
+
+ form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  input {
+    padding: 10px;
+    margin-bottom: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: border-color 0.3s ease-in-out;
+    outline: none;
+    color: #333;
+  }
+
+  input:focus {
+    border-color: #555;
+  }
+
+  button {
+    background-color: #3498db;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+  }
+
+  button:hover {
+    background-color: #2980b9;
+  }
+</style>
+
+{% endblock %}
+
 {% block content %}
 
-<div class="container align-items-center">
-  <div class="row py-4">
-    
-    <div class="col-6" style="height: 100%">
+<div class="container" style="margin-top: 80px;">
+  {% for error in errores %}
+
+  <div class="alert alert-danger" role="alert">
+    {{ error }}
+  </div>
+  {% endfor %}
+  <div class="row align-items-stretch">
+
+    <div class="col-6 d-flex flex-column align-items-center justify-content-center">
       <h2>Formulario de acceso</h2>
-      {% for error in errores %}
-
-            <div class="alert alert-danger" role="alert">
-                {{ error }}
-            </div>
-      {% endfor %}
-
-
       <form method="post" action="{% url 'login' %}" id="form">
         {% csrf_token %}
-        <div class="row justify-content-center" style="width: 40%; margin-left: auto; margin-right: auto;">
-          {{ form.as_p }}
-          <button type="submit">Acceder</button>
+
+        
+        <div class="row">
+          
+          <div class="col-6">
+            
+            <!-- aqui empieza form de django-->
+
+            {{ form }}
+            <!-- aqui termina form de django-->
+            <button type="submit" class="btn btn-primary">Acceder</button>
+          </div>
+
         </div>
-        
-        
+
       </form>
-      <!-- <a href="/accounts/register">Crear una cuenta</a> -->
     </div>
-    <div class="col-6">
-      <img src="{% static 'window.png ' %}" width="420" alt="">
+
+    <div class="col-6 d-flex justify-content-center">
+      <img src="{% static 'window.png ' %}" width="420" alt>
+    </div>
   </div>
-  </div>
-  
-    
+
 </div>
-        {% endblock %}
+{% endblock %}
