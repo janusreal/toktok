@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from django.contrib.auth import login
 from main.models import Inmueble, Region, Comuna
-from main.services import editar_user_sin_password, cambiar_password, crear_inmueble as crear_inmueble_service
+from main.services import editar_user_sin_password, cambiar_password, crear_inmueble as crear_inmueble_service, eliminar_inmueble as eliminar_inmueble_service, editar_inmueble as editar_inmueble_service
 from main.forms import InmuebleForm
 
 @login_required
@@ -15,8 +15,17 @@ def home(req):
 #funcion profile para autentificados
 @login_required
 def profile(req):
-    return render(req, 'profile.html')
-
+    user = req.user
+    mis_inmuebles = None
+    if user.usuario.rol == 'arrendador':
+        mis_inmuebles=user.inmuebles.all()
+    elif user.usuario.rol == 'arrendatario':
+        pass
+    
+    context = {
+        'mis_inmuebles':mis_inmuebles
+    }
+    return render(req,'profile.html',context)
 
 
 
@@ -67,7 +76,6 @@ def create_inmueble(req):
         num_banos=req.POST.get('num_banos')
         tipo_inmueble=req.POST.get('tipo_inmueble')
         precio_mensual=req.POST.get('precio_mensual')
-        precio_ufs=req.POST.get('precio_ufs')
         comuna_cod=req.POST.get('comuna')
         propietario=req.POST.get('propietario')
         
@@ -140,20 +148,50 @@ def crear_inmueble(req):
     messages.success(req, 'Nuevo inmueble agregado')
     return redirect('/accounts/profile')
 
+
+
+
 @user_passes_test(solo_arrendadores)
 def editar_inmueble(req,id):
     if req.method == 'GET':
         inmueble = Inmueble.objects.get(id=id)
         regiones = Region.objects.all()
         comunas = Comuna.objects.all()
-        cod_region = inmueble.comuna.region.cod
+        
+        cod_region_actual = inmueble.comuna_id[0:2]
+        
         context = {
             'inmueble':inmueble,
             'regiones':regiones,
             'comunas':comunas,
-            'cod_region':cod_region
+            'cod_region':cod_region_actual
         }
         return render(req, 'editar_inmueble.html',context)
     else:
-        return HttpResponse('Es un POST')
+        rut_propietario = req.user.username
+        editar_inmueble_service(
+            id,
+            req.POST['nombre'],
+            req.POST['descripcion'],
+            req.POST['direccion'],
+            int(req.POST['mts_cons']),
+            int(req.POST['mts_ttls']),
+            int(req.POST['num_estacionamientos']),
+            int(req.POST['num_habitaciones']),
+            int(req.POST['num_banos']),
+            req.POST['tipo_inmueble'],
+            int(req.POST['precio_mensual']),
+            req.POST['comuna_cod'],
+            rut_propietario)
+        messages.success(req, "Cambios guardados con éxito!")
+        return redirect('/')
+    
+    
+    
+    
 
+@user_passes_test(solo_arrendadores)
+def eliminar_inmueble(req,id):
+    eliminar_inmueble_service(id)
+    messages.error(req,'Inmueble ha sido eliminado')
+    return redirect('/accounts/profile/')

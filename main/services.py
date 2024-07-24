@@ -7,7 +7,7 @@ from django.contrib import messages
 
 #funciones de usuario
 
-def crear_inmueble(nombre, descripcion, direccion, mts_cons, mts_ttls, num_estacionamientos,num_habitaciones, num_banos, tipo_inmueble, precio_mensual, precio_ufs, comuna_cod, username):
+def crear_inmueble(nombre, descripcion, direccion, mts_cons, mts_ttls, num_estacionamientos,num_habitaciones, num_banos, tipo_inmueble, precio_mensual, comuna_cod, username):
     comuna = Comuna.objects.get(cod=comuna_cod)
     propietario = User.objects.get(username=username)
     
@@ -22,7 +22,6 @@ def crear_inmueble(nombre, descripcion, direccion, mts_cons, mts_ttls, num_estac
         num_banos=num_banos,
         tipo_inmueble=tipo_inmueble,
         precio_mensual=precio_mensual,
-        precio_ufs=precio_ufs,
         comuna=comuna,
         propietario=propietario
     )
@@ -32,30 +31,33 @@ def crear_inmueble(nombre, descripcion, direccion, mts_cons, mts_ttls, num_estac
 
 
 
-def actualizar_inmueble(inmueble_id, nombre,descripcion, direccion,  mts_cons, mts_ttls,  num_estacionamientos,num_banos,tipo_inmueble,precio_mensual, precio_ufs,comuna):
+def editar_inmueble(inmueble_id, nombre,descripcion, direccion,  mts_cons, mts_ttls,  num_estacionamientos,num_habitaciones,num_banos,tipo_inmueble,precio_mensual, comuna_cod, rut_propietario):
     inmu = Inmueble.objects.get(id=inmueble_id)
-    comuna = Comuna.objects.get(nombre=comuna)
+    comuna = Comuna.objects.get(cod=comuna_cod)
+    propietario = User.objects.get(username=rut_propietario)
     inmu.nombre=nombre
     inmu.descripcion=descripcion 
     inmu.direccion=direccion 
     inmu.mts_cons=mts_cons
     inmu.mts_ttls=mts_ttls 
     inmu.num_estacionamientos=num_estacionamientos 
+    inmu.num_habitaciones=num_habitaciones
     inmu.num_banos=num_banos 
     inmu.tipo_inmueble = tipo_inmueble
     inmu.precio_mensual=precio_mensual
-    inmu.precio_ufs=precio_ufs
-    inmu.comuna = comuna
+    inmu.comuna=comuna
+    propietario=propietario
     
     inmu.save()
-    return inmu
+
 
 
 
 
 def eliminar_inmueble(inmueble_id):
-    inmueble = Inmueble.objects.get(id=inmueble_id)
-    inmueble.delete()
+    Inmueble.objects.get(id=inmueble_id).delete()
+    
+    
 
 def crear_user(username,first_name,last_name, email, password,pass_confirm, direccion,telefono=None):
     

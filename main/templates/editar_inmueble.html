@@ -4,7 +4,7 @@
 
     <h2>Formulario para editar Propiedad {{ inmueble.id}}</h2>
 
-    <form method="POST" action="/editar_inmueble/">
+    <form action="{% url 'editar_inmueble' id=inmueble.id %}" method="post">
 
       {% csrf_token %}
       <div class="row">
@@ -53,14 +53,14 @@
           <div class="mb-3">
             <label for="num_estacionamientos" class="form-label">Nro de
               Estacionamientos</label>
-            <input min="0" value="0" type="number" value="{{ inmueble.num_estacionamientos }}"  name="num_estacionamientos"
+            <input min="0" type="number" value="{{ inmueble.num_estacionamientos }}"  name="num_estacionamientos"
               class="form-control" id placeholder="# estacionamientos" required>
           </div>
 
           <div class="mb-3">
             <label for="num_habitaciones" class="form-label">Nro
               habitaciones</label>
-            <input min="0" value="0" type="number" value="{{ inmueble.num_habitaciones }}"  name="num_habitaciones"
+            <input min="0" type="number" value="{{ inmueble.num_habitaciones }}"  name="num_habitaciones"
               class="form-control" id placeholder="# habitaciones" required>
           </div>
 <div class="mb-3">
@@ -84,7 +84,8 @@
               {% for tt in inmueble.tipos %}
               <option value="{{tt.0}}" 
               {% if tt.0 == inmueble.tipo_inmueble %} selected {% endif %}
-              >{{tt.1}}
+              >
+              {{tt.1}}
             </option>
               {% endfor %}
             </select>
@@ -116,14 +117,8 @@
 
           <div class="mb-3">
             <label for="precio_mensual" class="form-label">Precio (clp)</label>
-            <input min="1000" type="number"value="{{ inmueble.precio_mensual }}"  name="precio_mensual"
+            <input min="1000" type="number" value="{{ inmueble.precio_mensual }}"  name="precio_mensual"
               class="form-control" id placeholder="precio_mensual">
-          </div>
-
-          <div class="mb-3">
-            <label for="precio_ufs" class="form-label">precio_ufs</label>
-            <input type="text" name="precio_ufs" value="{{ inmueble.precio_ufs }}"  class="form-control" id
-              placeholder="precio_ufs">
           </div>
         </div>
       </div>

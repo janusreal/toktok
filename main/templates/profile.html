@@ -55,21 +55,21 @@
                         </div>
                         <div class="mb-3">
                             Arrendatario:
-                            <input 
+                            <input
                                 type="radio"
                                 name="rol"
                                 id="arrendatario"
                                 value="arrendatario"
-                                {% if user.usuario.rol == 'arrendatario' %}checked{%endif %}
+                                {% if user.usuario.rol == 'arrendatario'%}checked{%endif %}
                                 required>
-                            Arrendador: 
-                            <input 
-                            type="radio"
-                            name="rol"
-                            id="arrendador"
-                            value="arrendador"
-                            {% if user.usuario.rol == 'arrendador' %}checked{%endif%}
-                            required>
+                            Arrendador:
+                            <input
+                                type="radio"
+                                name="rol"
+                                id="arrendador"
+                                value="arrendador"
+                                {% if user.usuario.rol == 'arrendador'%}checked{%endif%}
+                                required>
                         </div>
                         <button type="submit"
                             class="btn btn-primary mb-3">Actualizar
@@ -79,38 +79,60 @@
 
                 </div>
 
-                <div class="col-8">
-                    <h3 class="text-center">Cambiar contraseña</h3>
 
-            <form action="/accounts/change-pass/" method="post">
-                {% csrf_token %}
-                <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">Contraseña</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1">
-                  </div>
 
-                <div class="mb-3">
-    <label for="exampleInputPassword1" class="form-label">Repita su contraseña</label>
-    <input type="password_repeat" class="form-control">
-  </div>
+                        
 
-  <button type="submit" class="btn btn-primary">Actualizar contraseña</button>
-            </form>
 
-                </div>
+                    <div class="col-8">
+<h3 class="text-center">Cambiar contraseña</h3>
+                        <form action="/accounts/change-pass/" method="post">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="exampleInputPassword1"
+                                    class="form-label">Contraseña</label>
+                                <input type="password" class="form-control" name="password"
+                                    id="exampleInputPassword1">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="exampleInputPassword1"
+                                    class="form-label">Repita su
+                                    contraseña</label>
+                                <input type="password" name="password_repeat"
+                                    class="form-control">
+                            </div>
+
+                            <button type="submit"
+                                class="btn btn-primary">Actualizar
+                                contraseña</button>
+                        </form>
+
+                    </div>
+
             </div>
 
         </div>
-        <div class="col-3"><h3 class="text-center">Propiedades en arriendo</h3>
+        <div class="col-3">
 
-            {% if user.usuario.rol == 'arrendador' or user.is_staff %}
-
+            {% if user.usuario.rol == 'arrendador' %}
+            <h3 class="text-center">Propiedades en arriendo</h3>
             <p>+ <a href="{% url 'nuevo_inmueble' %}">Agregar inmueble</a></p>
+            {% elif user.usuario.rol == 'arrendatario' %}
+            <h3>Propiedades solicitadas</h3>
+            {% endif%}
+            <ul class="list-group">
 
-            {% endif %}
-            <ul>
-                {% for inmueble in inmuebles %}
-                <li>{{ inmueble.nombre }}</li>
+                {% for inmueble in mis_inmuebles %}
+
+                <li class="list-group-item d-flex justify-content-between">
+                     {{inmueble.nombre}}</a>
+                     <span>
+                        <a href="{% url 'editar_inmueble' id=inmueble.id %}"><i class="bi bi-pen"></i></a> 
+                        <a href="{% url 'eliminar_inmueble' id=inmueble.id %}" onclick="eliminar(event)"><i class="bi bi-trash" id="{{inmueble.id}}"></i></a></span>
+                    </span></li>
+                    {%empty%}
+                    <li class="list-group-item">No hay propiedades registradas</li>
                 {% endfor %}
 
             </ul>
@@ -119,11 +141,26 @@
     </div>
     <div class="row">
         <div class="col">
-            
 
         </div>
     </div>
 
 </div>
 
+{% endblock %}
+
+{% block js %}
+<script>
+    function eliminar(event){
+
+        event.preventDefault()
+        const id = event.target.id
+        const url = '/eliminar-inmueble/' + id + '/'
+        const confirmacion = confirm('Este inmueble será eliminado. Haga clic en Aceptar para confirmar.')
+        if(confirmacion == true){
+            window.location.href = url
+        }
+
+    }
+</script>
 {% endblock %}

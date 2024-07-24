@@ -45,7 +45,6 @@ class Inmueble(models.Model):
     num_banos = models.IntegerField(validators=[MinValueValidator(0)])
     tipo_inmueble = models.CharField(max_length=255,choices=tipos)
     precio_mensual = models.IntegerField(validators=[MinValueValidator(1000)],null=True)
-    precio_ufs = models.FloatField(validators=[MinValueValidator(1.0)], null=True)
     comuna = models.ForeignKey(Comuna, related_name='inmuebles',on_delete=models.RESTRICT)
     propietario = models.ForeignKey(User, on_delete=models.RESTRICT, related_name='inmuebles')
     # falta lo de la comuna y desarrollar las funcionalidades

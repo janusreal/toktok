@@ -1,11 +1,98 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block css %}
+<style>
+
+    .box{
+
+    }
+
+
+    .typing-container {
+        display: flex;
+        align-items: center;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    .fixed-text {
+        margin-right: 5px;
+    }
+
+    .typing-effect {
+        white-space: nowrap;
+        overflow: hidden;
+        border-right: 0 solid;
+        animation: typing 3s steps(5) infinite, step-end infinite;
+    }
+
+    @keyframes typing {
+        0% {
+            width: 0;
+        }
+        50% {
+            width: 8ch;
+        }
+        100% {
+            width: 0;
+        }
+
+    }
+
+    @keyframes blink-caret {
+        from, to {
+            border-color: transparent;
+        }
+        50% {
+            border-color: rgb(0, 0, 0);
+        }
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 
 <div class="container">
-<h2>Página inicial</h2>
-<p>Solo para usuarios autentificados</p>
+
+    <div class="row">
+        <div class="col-6 d-flex align-items-center">
+
+            <div class="box">
+            <div class="typing-container">
+                <div class="fixed-text">Un lugar para</div>
+                <div class="typing-effect" id="typing"></div>
+            </div>
+            <p>Ven y conoce nuestra oferta de Casas, Departamentos y Bodegas
+                para que puedas elegir tu mejor opción.</p>    
+            </div>
+            
+
+        </div>
+        <div class="col-6">
+            <img src="{% static 'real-estate.png' %}" style="width: 100%;" alt>
+        </div>
+    </div>
 
 </div>
 
+{% endblock %}
+{% block js %}
+<script>
+    const words = ["vivir", "invertir"];
+    let index = 0;
+    const typingElement = document.getElementById("typing");
 
+    function typeText() {
+        typingElement.textContent = words[index];
+        typingElement.style.width = `${words[index].length}ch`;
+
+        setTimeout(() => {
+            index = (index + 1) % words.length;
+            typeText();
+        }, 3000); // Cambiar después de 3 segundos
+    }
+
+    typeText();
+</script>
 {% endblock %}
