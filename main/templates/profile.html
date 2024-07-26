@@ -113,24 +113,26 @@
             </div>
 
         </div>
-        <div class="col-3">
+        <div class="col-4">
 
             {% if user.usuario.rol == 'arrendador' %}
             <h3 class="text-center">Propiedades en arriendo</h3>
             <p>+ <a href="{% url 'nuevo_inmueble' %}">Agregar inmueble</a></p>
             {% elif user.usuario.rol == 'arrendatario' %}
             <h3>Propiedades solicitadas</h3>
-            {% endif%}
+            {% endif %}
             <ul class="list-group">
 
                 {% for inmueble in mis_inmuebles %}
 
                 <li class="list-group-item d-flex justify-content-between">
-                     {{inmueble.nombre}}</a>
-                     <span>
+                     <div class="me-3">
+                        <p>{{inmueble.nombre}}</p>
+                     </div>
+                     <div style="min-width: 40px;">
                         <a href="{% url 'editar_inmueble' id=inmueble.id %}"><i class="bi bi-pen"></i></a> 
                         <a href="{% url 'eliminar_inmueble' id=inmueble.id %}" onclick="eliminar(event)"><i class="bi bi-trash" id="{{inmueble.id}}"></i></a></span>
-                    </span></li>
+                     </div></li>
                     {%empty%}
                     <li class="list-group-item">No hay propiedades registradas</li>
                 {% endfor %}

@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-8">
+            <img src="{% static 'casa_1.png' %}" width="100%" class="img-fluid">
+        </div>
+        <div class="col-4">
+            <span class="epigrafe">{{nombre_region}}</span>
+            <h1>{{ inmueble.nombre }}<br><span
+                    style="font-size: 0.65em;">{{nombre_comuna}}</span>
+            </h1>
+
+            <p>{{ inmueble.descripcion }}</p>
+            <h2>$ {{ inmueble.precio_mensual|intcomma:0 }} mensuales</h2>
+            <div class="row my-5">
+                <div class="col d-flex flex-wrap">
+                    <div class="card" style="width:12rem">
+                        <div class="card-body">
+                            <p>Mts construidos</p>
+                            <h2>{{ inmueble.mts_cons }}</h2>
+                        </div>
+                    </div>
+
+                    <div class="card" style="width:12rem">
+                        <div class="card-body">
+                            <p>Mts totales</p>
+                            <h2>{{ inmueble.mts_ttls }}</h2>
+                        </div>
+                    </div>
+
+                    <div class="card" style="width:12rem">
+                        <div class="card-body">
+                            <p>Estacionamientos</p>
+                            <h2>{{ inmueble.num_estacionamientos }}</h2>
+                        </div>
+                    </div>
+
+                    <div class="card" style="width:12rem">
+                        <div class="card-body">
+                            <p>Nro habitaciones</p>
+                            <h2>{{ inmueble.num_habitaciones }}</h2>
+                        </div>
+                    </div>
+
+                    <div class="card" style="width:12rem">
+                        <div class="card-body">
+                            <p>Cant. de Baños</p>
+                            <h2>{{ inmueble.num_banos }}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h4>Dirección:</h4>
+            <p>{{ inmueble.direccion }}, {{ nombre_comuna }}<br>Región {{nombre_region}}</p>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

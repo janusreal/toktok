@@ -3,13 +3,55 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from django.contrib.auth import login
+from django.db.models import Q
 from main.models import Inmueble, Region, Comuna
 from main.services import editar_user_sin_password, cambiar_password, crear_inmueble as crear_inmueble_service, eliminar_inmueble as eliminar_inmueble_service, editar_inmueble as editar_inmueble_service
 from main.forms import InmuebleForm
 
 @login_required
 def home(req):
-    return render(req, 'home.html')
+    datos = req.GET
+    region_cod = datos.get('region_cod','')
+    comuna_cod = datos.get('comuna_cod','')
+    palabra = datos.get('palabra','')
+
+    inmuebles = filtrar_inmuebles(region_cod,comuna_cod,palabra)
+    comunas = Comuna.objects.all()
+    regiones = Region.objects.all()
+    context = {
+        'comunas':comunas,
+        'regiones':regiones,
+        'inmuebles':inmuebles
+    }
+    return render(req, 'home.html',context)
+
+def filtrar_inmuebles(region_cod, comuna_cod, palabra):
+    
+    filtro_palabra = None
+    
+    if palabra != '':
+        filtro_palabra = Q(nombre__icontains=palabra) | Q(descripcion__icontains=palabra)
+   
+    filtro_ubicacion = None
+
+    if comuna_cod != '':
+        comuna = Comuna.objects.get(cod=comuna_cod)
+        filtro_ubicacion = Q(comuna=comuna)
+    elif region_cod != '':
+        region = Region.objects.get(cod=region_cod)
+        comunas_region = region.comunas.all()
+        filtro_ubicacion = Q(comuna__in=comunas_region)
+
+    if filtro_ubicacion is None and filtro_palabra is None:
+        return Inmueble.objects.all()
+    elif filtro_ubicacion is not None and filtro_palabra is None:
+        return Inmueble.objects.filter(filtro_ubicacion)
+    elif filtro_ubicacion is None and filtro_palabra is not None:
+        return Inmueble.objects.filter(filtro_palabra)
+    elif filtro_ubicacion is not None and filtro_palabra is not None:
+        return Inmueble.objects.filter(filtro_palabra & filtro_ubicacion)
+
+
 
 
 #funcion profile para autentificados
@@ -90,7 +132,6 @@ def create_inmueble(req):
             num_banos=num_banos,
             tipo_inmueble=tipo_inmueble,
             precio_mensual=precio_mensual,
-            precio_ufs=precio_ufs,
             comuna=comuna_cod,
             propietario=propietario)
         inmueble.save()
@@ -141,12 +182,27 @@ def crear_inmueble(req):
             int(req.POST['num_banos']),
             req.POST['tipo_inmueble'],
             int(req.POST['precio_mensual']),
-            int(req.POST['precio_ufs']),
             req.POST['comuna_cod'],
             propietario_rut
             )
     messages.success(req, 'Nuevo inmueble agregado')
     return redirect('/accounts/profile')
+
+
+@login_required
+def detalle_inmueble(req,id):
+    id = int(id)
+    inmueble_encontrado = Inmueble.objects.get(id=id)
+    nombre_comuna = inmueble_encontrado.comuna.nombre
+    cod_region = inmueble_encontrado.comuna_id[0:2]
+    nombre_region = Region.objects.get(cod=cod_region)
+    context = {
+        'inmueble': inmueble_encontrado,
+        'nombre_comuna':nombre_comuna,
+        'nombre_region':nombre_region
+    }
+    return render(req, 'detalle_inmueble.html', context)
+
 
 
 

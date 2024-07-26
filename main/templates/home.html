@@ -3,11 +3,6 @@
 {% block css %}
 <style>
 
-    .box{
-
-    }
-
-
     .typing-container {
         display: flex;
         align-items: center;
@@ -55,30 +50,118 @@
 
 <div class="container">
 
-    <div class="row">
+    <div class="row pb-5">
         <div class="col-6 d-flex align-items-center">
 
             <div class="box">
-            <div class="typing-container">
-                <div class="fixed-text">Un lugar para</div>
-                <div class="typing-effect" id="typing"></div>
+                <div class="typing-container">
+                    <div class="fixed-text">Un lugar para</div>
+                    <div class="typing-effect" id="typing"></div>
+                </div>
+                <p>Ven y conoce nuestra oferta de Casas, Departamentos y Bodegas
+                    para que puedas elegir tu mejor opción.</p>
             </div>
-            <p>Ven y conoce nuestra oferta de Casas, Departamentos y Bodegas
-                para que puedas elegir tu mejor opción.</p>    
-            </div>
-            
 
         </div>
         <div class="col-6">
             <img src="{% static 'real-estate.png' %}" style="width: 100%;" alt>
         </div>
     </div>
+</div>
 
+<div class="container">
+    <div class="row">
+        <div class="col-4">
+            <form action="/" method="get">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label for="region_cod">Región</label>
+                    <select name="region_cod" id="region_cod"
+                        class="form-select">
+                        <option value="">Selecciona región</option>
+                        {% for region in regiones %}
+                        <option value="{{ region.cod }}">
+                            {{region.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="comuna_cod">Comuna</label>
+                    <select name="comuna_cod" id="comuna_cod"
+                        class="form-select">
+                        <option value>Selecciona comuna</option>
+                        {% for comuna in comunas %}
+                        <option
+                            value="{{comuna.cod}}">{{comuna.nombre}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="palabras" class="form-label">Palabras</label>
+                    <input type="text" class="form-control" name="palabra"
+                        id="palabra">
+                </div>
+                <input type="submit" value="Buscar" class="btn btn-success">
+            </form>
+        </div>
+        <div class="col-8">
+
+            {% for inmueble in inmuebles %}
+
+            <div class="card mt-3">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-8">
+
+                            <h5 class="card-title">{{ inmueble.nombre}}</h5>
+                            <p class="card-text">{{ inmueble.descripcion }}</p>
+
+                        </div>
+                        <div class="col-4">
+                            <a href="{% url 'detalle_inmueble' id=inmueble.id %}" class="btn btn-primary">Ver detalle</a>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            {% endfor %}
+
+        </div>
+    </div>
 </div>
 
 {% endblock %}
+
 {% block js %}
 <script>
+
+function filtrar_comunas(){
+  const cod_seleccionado = $(this).val()
+    $("#comuna_cod").val("")
+  $('#comuna_cod option').each(function(){
+      const comuna = $(this)
+      const cod_comuna = comuna.val()
+
+      if(cod_seleccionado == cod_comuna.substring(0,2)){
+
+          comuna.show()
+      }else{
+          comuna.hide()
+      }
+  })
+  }
+
+  $('#region_cod').on('change', filtrar_comunas)
+
+
+
+
+
+
+
     const words = ["vivir", "invertir"];
     let index = 0;
     const typingElement = document.getElementById("typing");
@@ -94,5 +177,7 @@
     }
 
     typeText();
+
 </script>
+
 {% endblock %}
