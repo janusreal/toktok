@@ -57,12 +57,13 @@ def editar_inmueble(inmueble_id, nombre,descripcion, direccion,  mts_cons, mts_t
 def eliminar_inmueble(inmueble_id):
     Inmueble.objects.get(id=inmueble_id).delete()
     
-    
 
-def crear_user(username,first_name,last_name, email, password,pass_confirm, direccion,telefono=None):
+  
+
+def crear_user(req,username,first_name,last_name, email, password, password_confirm, direccion, rol, telefono=None):
     
-    if password != pass_confirm:
-        return False, 'Las contraseñas no coinciden'
+    if password != password_confirm:
+        messages.error(req,'Las contraseñas no coinciden')
     
     try:
         user = User.objects.create_user(
@@ -79,12 +80,15 @@ def crear_user(username,first_name,last_name, email, password,pass_confirm, dire
     UserProfile.objects.create(
         user = user,
         direccion = direccion,
-        telefono = telefono        
+        telefono = telefono,
+        rol = rol
     )
-    return True
+
+    messages.success(req, 'El usuario se ha creado correctamente')  
+    return True, None
     
 
-def editar_user(username, first_name, last_name, email,password, direccion,telefono=None):
+def editar_user(username, first_name, last_name, email,password, direccion, telefono=None):
     user = User.objects.get(username=username)
     user.first_name = first_name
     user.last_name = last_name

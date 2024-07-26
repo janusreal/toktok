@@ -5,8 +5,7 @@ from django.contrib import messages
 from django.contrib.auth import login
 from django.db.models import Q
 from main.models import Inmueble, Region, Comuna
-from main.services import editar_user_sin_password, cambiar_password, crear_inmueble as crear_inmueble_service, eliminar_inmueble as eliminar_inmueble_service, editar_inmueble as editar_inmueble_service
-from main.forms import InmuebleForm
+from main.services import editar_user_sin_password, crear_user, cambiar_password, crear_inmueble as crear_inmueble_service, eliminar_inmueble as eliminar_inmueble_service, editar_inmueble as editar_inmueble_service
 
 @login_required
 def home(req):
@@ -24,6 +23,39 @@ def home(req):
         'inmuebles':inmuebles
     }
     return render(req, 'home.html',context)
+
+
+def nuevo_usuario(req):
+    if req.method == 'POST':
+        username = req.POST["username"]
+        first_name = req.POST["first_name"]
+        last_name = req.POST["last_name"]
+        email = req.POST["email"]
+        password = req.POST["password"]
+        password_confirm = req.POST["password_confirm"]
+        direccion = req.POST["direccion"]
+        rol = req.POST["rol"]
+        telefono = req.POST["telefono"]
+        crear_user(req,username,first_name,last_name,email,password,password_confirm,direccion,rol,telefono)
+        if crear_user:
+            return redirect('/accounts/login')
+        return render(req,'nuevo_usuario.html',{
+            'username':username,
+            'first_name':first_name,
+            'last_name':last_name,
+            'email':email,
+            'direcion':direccion,
+            'rol':rol,
+            'telefono':telefono
+            
+        })
+    else:
+        return render(req,'nuevo_usuario.html')
+    
+    return redirect('login')
+
+
+
 
 def filtrar_inmuebles(region_cod, comuna_cod, palabra):
     
