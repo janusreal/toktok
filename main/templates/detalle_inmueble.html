@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load humanize %}
+{% load custom_filters %}
 {% block content %}
 
 <div class="container">
@@ -16,7 +17,7 @@
             </h1>
 
             <p>{{ inmueble.descripcion }}</p>
-            <h2>$ {{ inmueble.precio_mensual|intcomma:0 }} mensuales</h2>
+            <h2>$ {{ inmueble.precio_mensual|format_number }} mensuales</h2>
             <div class="row my-5">
                 <div class="col d-flex flex-wrap">
                     <div class="card" style="width:12rem">
